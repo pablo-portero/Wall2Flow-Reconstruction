@@ -6,11 +6,11 @@ The core idea is to reinterpret the wall-normal direction as a pseudo-temporal a
 The architecture is composed of different main components:
 
 
-he proposed framework reconstructs a three-dimensional turbulent velocity field from wall-based measurements. The input consists of instantaneous wall pressure and wall-shear-stress fields,
+The proposed framework reconstructs a three-dimensional turbulent velocity field from wall-based measurements. The input consists of instantaneous wall pressure and wall-shear-stress fields,
 
-\[
+$$
 \mathbf{c}_f = (p_w, \tau_{w_x}, \tau_{w_z}),
-\]
+$$
 
 which are arranged as a multi-channel 2D image. The model then generates the 3D flow field slice by slice along the wall-normal direction. This direction is interpreted as a pseudo-temporal axis, allowing the use of image-to-video ideas to promote coherence between consecutive wall-parallel slices.
 
@@ -22,9 +22,9 @@ which are arranged as a multi-channel 2D image. The model then generates the 3D 
 
 The global architecture combines a slice-wise U-Net generator, a ControlNet-style conditioning branch, and an AnimateDiff-inspired Motion Transformer. The generation process starts from a prescribed zero-valued wall slice, consistent with the no-slip and no-penetration boundary conditions. Then, each wall-parallel velocity slice
 
-\[
+$$
 \hat{\mathbf{y}}_t = (\hat{u}_t, \hat{v}_t, \hat{w}_t)
-\]
+$$
 
 is predicted from the previous slice and the wall-conditioning information. The final 3D reconstruction is obtained by stacking all predicted slices along the wall-normal direction.
 
