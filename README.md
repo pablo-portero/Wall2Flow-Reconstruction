@@ -1,6 +1,7 @@
 # Wall to Flow Reconstruction
 
-<p Work in Progress
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Work%20in%20Progress-b00020?style=for-the-badge" alt="Work in Progress"/>
 </p>
 
 This repository implements different deep generative framework for the real-time reconstruction of three-dimensional turbulent channel flows from wall measurements.
