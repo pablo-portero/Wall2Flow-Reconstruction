@@ -1,6 +1,16 @@
-# 3D Reconstruction of Turbulence From Wall Data Using a Physics Guided Motion-Transformer Framework
+# Wall to Flow Reconstruction
 
-This repository implements a physics-guided deep generative framework for the real-time reconstruction of three-dimensional turbulent channel flows from wall measurements.
+<p Work in Progress
+</p>
+
+This repository implements different deep generative framework for the real-time reconstruction of three-dimensional turbulent channel flows from wall measurements.
+
+
+## 3D GAN
+
+
+## 3D Reconstruction of Turbulence From Wall Data Using a Physics Guided Motion-Transformer Framework
+
 The method is motivated by the fact that, in many aerodynamic and industrial applications, only wall-based quantities such as pressure and shear stresses are accessible in real time. The proposed architecture uses these sparse surface measurements to reconstruct the full volumetric velocity field inside the flow domain.
 The core idea is to reinterpret the wall-normal direction as a pseudo-temporal axis. In this way, the reconstruction problem is formulated as an image-to-video generation task, where each wall-parallel flow slice is generated sequentially from the wall towards the channel center.
 The architecture is composed of different main components:
@@ -30,9 +40,9 @@ is predicted from the previous slice and the wall-conditioning information. The 
 
 ---
 
-## Main Components
+### Main Components
 
-### 1. Control Branch
+#### 1. Control Branch
 
 The Control Branch encodes the wall information, namely wall pressure and the two wall-shear-stress components. These inputs are processed through convolutional blocks to extract multi-scale conditioning features. The resulting feature maps are injected into the U-Net generator at different encoder, bottleneck, and decoder stages through zero-initialized adapters.
 
@@ -44,7 +54,7 @@ This module allows the wall measurements to guide the reconstruction process whi
 
 ---
 
-### 2. Slice-Conditional U-Net Generator
+#### 2. Slice-Conditional U-Net Generator
 
 The U-Net is the main slice-wise generator. It receives the previous predicted slice and produces the next wall-parallel velocity slice. The encoder progressively compresses the spatial representation, while the decoder reconstructs the output resolution using skip connections to preserve spatial detail.
 
@@ -56,7 +66,7 @@ Control features from the Control Branch are injected throughout the U-Net, so t
 
 ---
 
-### 3. Motion Transformer
+#### 3. Motion Transformer
 
 The Motion Transformer is inspired by AnimateDiff and is used to improve coherence between consecutive wall-normal slices. It operates at the U-Net bottleneck, where mid-level feature maps from a window of consecutive slices are stacked along the pseudo-temporal direction.
 
@@ -68,7 +78,7 @@ Self-attention is then applied along the slice index, allowing the model to lear
 
 ---
 
-### 4. PatchGAN Discriminator
+#### 4. PatchGAN Discriminator
 
 A conditional PatchGAN discriminator is used during training to improve the local realism of the generated slices. For each predicted slice, the discriminator receives a concatenation of the current slice, the wall measurements, and the previous slice. It outputs a spatial map of real/fake logits, encouraging the generator to produce locally realistic turbulent structures.
 
@@ -80,7 +90,7 @@ If the discriminator scheme is available as an image, it can be added as:
 
 ---
 
-## Training Strategy
+### Training Strategy
 
 The model is trained using a combination of data-driven, adversarial, and physics-guided losses. The data loss enforces agreement with the reference DNS velocity fields, while the adversarial loss improves local realism. Additional physics-based constraints are included to promote mass conservation, partial momentum consistency, and periodicity at the side boundaries of the reconstructed volume.
 
